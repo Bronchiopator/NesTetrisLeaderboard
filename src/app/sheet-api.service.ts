@@ -1,63 +1,24 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import {sheets_v4, sheets, AuthPlus, auth } from '@googleapis/sheets';
+import { Observable } from 'rxjs';
 
 const apiKey: string = 'AIzaSyDDta7RwA0cAD3fqbaqrSt9BDTVelnjHY4';
 const spreadsheetId: string = '1ZBxkZEsfwDsUpyire4Xb16er36Covk7nhR8BN_LPodI';
+const range: string = 'NTSC 0-19 Score!A:K';
+// GET https://sheets.googleapis.com/v4/spreadsheets/[SPREADSHEETID]/values:batchGet?key=[YOUR_API_KEY] HTTP/1.1
+
+// Authorization: Bearer [YOUR_ACCESS_TOKEN]
+// Accept: application/json
 @Injectable({
   providedIn: 'root',
 })
 export class SheetApiService {
-
-  constructor() {}
-test(){
-  let v4Sheet: sheets_v4.Sheets = sheets({ version: 'v4', auth: apiKey });
-   v4Sheet.spreadsheets.values.get(
-      {
-        spreadsheetId: spreadsheetId,
-        range: 'NTSC 0-19 Score!A:K',
-      },
-      (err: any, res: any) => {
-        if (err) {
-          console.error('The API returned an error.');
-          throw err;
-        }
-        const rows = res.data.values;
-        if (rows.length === 0) {
-          console.log('No data found.');
-        } else {
-          console.log('Name, Major:');
-          for (const row of rows) {
-            // Print columns A and E, which correspond to indices 0 and 4.
-            console.log(`${row[0]}, ${row[4]}`);
-          }
-        }
-      }
+  constructor(private client: HttpClient) {}
+  getClomuns():Observable<object> {
+    let test = this.client.get(
+      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`
     );
-}
-  getClomuns() {
-    // let v4Sheet: sheets_v4.Sheets = sheets('v4');
-    // v4Sheet.spreadsheets.values.get(
-    //   {
-    //     fields: apiKey,
-    //     spreadsheetId: spreadsheetId,
-    //     range: 'NTSC 0-19 Score!A:K',
-    //   },
-    //   (err: any, res: any) => {
-    //     if (err) {
-    //       console.error('The API returned an error.');
-    //       throw err;
-    //     }
-    //     const rows = res.data.values;
-    //     if (rows.length === 0) {
-    //       console.log('No data found.');
-    //     } else {
-    //       console.log('Name, Major:');
-    //       for (const row of rows) {
-    //         // Print columns A and E, which correspond to indices 0 and 4.
-    //         console.log(`${row[0]}, ${row[4]}`);
-    //       }
-    //     }
-    //   }
-    // );
+    console.log(test);
+    return test;
   }
 }

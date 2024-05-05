@@ -14,6 +14,9 @@ export class SheetApiTestComponent {
   text: string = 'test';
   constructor(private servie: SheetApiService) {}
   execute(){
-    this.servie.getClomuns();
+    this.servie.getClomuns().subscribe(
+      x=>
+        console.log(x)
+    );
   }
 }
