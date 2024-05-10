@@ -2,4 +2,7 @@ export type ProofLabel =
 | 'Youtube'
 | 'Twitch'
 | 'CTM Discord'
-| string;
+| 'Discord'
+| 'Google Drive'
+| 'Clipchamp'
+| '';

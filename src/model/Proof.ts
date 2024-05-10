@@ -1,7 +1,8 @@
-export type Proof =
-  | 'Video+'
-  | 'Video'
-  | 'Partial Video'
-  | 'Image'
-  | 'Claim'
-  | 'Lost';
+export enum Proof {
+  VideoPlus = 'Video+',
+  Video = 'Video',
+  PartialVideo = 'Partial Video',
+  Image = 'Image',
+  Claim = 'Claim',
+  Lost = 'Lost',
+}

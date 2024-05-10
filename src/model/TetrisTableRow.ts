@@ -1,16 +1,17 @@
+import { GamePlatform } from "./GamePlatform";
 import { InputMethod } from "./InputMethod";
 import { Proof } from "./Proof";
 
 export interface TetrisTableRow {
   ranking: number;
-  name: number;
+  name: string;
   crash: boolean;
   score: number;
-  platform: 'Console' | 'Emulator';
+  platform:  GamePlatform;
   style: InputMethod[];
-  proof: Proof;
+  proofType: Proof;
   videoPersonalBest:number;
   notes:string;
-  proofLablel:string;
+  proofLabel:string;
   proofLink:string;
 }
