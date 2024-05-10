@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { SheetApiService } from '../sheet-api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,15 +9,19 @@ import { DataSource } from '@angular/cdk/table';
 import { InputMethod } from '../../model/InputMethod';
 import { TransformToRowPipe } from '../transform-to-row.pipe';
 import { DecimalPipe } from '@angular/common';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-leaderboard-table',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatInputModule, MatTableModule,DecimalPipe],
+  imports: [MatButtonModule, MatIconModule, MatInputModule, MatTableModule,MatFormFieldModule,DecimalPipe,MatSortModule],
   templateUrl: './leaderboard-table.component.html',
   styleUrl: './leaderboard-table.component.scss',
 })
-export class LeaderboardTableComponent {
+export class LeaderboardTableComponent implements AfterViewInit{
+  @ViewChild(MatSort) sort!: MatSort;
+
   dataSource: MatTableDataSource<TetrisTableRow> =
     new MatTableDataSource<TetrisTableRow>([]);
   pipe: TransformToRowPipe;
@@ -29,6 +33,7 @@ export class LeaderboardTableComponent {
     'style',
     'proofType',
     'vidPB',
+    'platform',
     // 'notes',
     // 'proofLink',
   ];
@@ -41,9 +46,24 @@ export class LeaderboardTableComponent {
     });
   }
 
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+
   getStyleString(style: InputMethod, isFirst: boolean) {
     return isFirst ? style : '+' + style;
   }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   getTransformedData(values: string[][]): TetrisTableRow[] {
     //skip header line
     let data: TetrisTableRow[] = [];

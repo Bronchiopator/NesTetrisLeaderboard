@@ -57,7 +57,9 @@ export class TransformToRowPipe implements PipeTransform {
 
     for (const singleString of seperadedStyles) {
       try {
-        convertedStyles.push(InputMethod[singleString as keyof typeof InputMethod]); 
+        convertedStyles.push(
+          InputMethod[singleString as keyof typeof InputMethod]
+        );
       } catch (error) {
         convertedStyles.push(InputMethod.Roll);
       }
@@ -66,11 +68,12 @@ export class TransformToRowPipe implements PipeTransform {
   }
 
   private ConvertStringtoProof(proof: string): Proof {
-    try {
-      return Proof[proof as keyof typeof Proof]; 
-    } catch (error) {
-      return Proof.Lost
-    }
+    // return Proof[proof as keyof typeof Proof] ?? Proof.Lost;
+
+    var result=Object.keys(Proof).filter(key=>{
+      return proof==Proof[key as keyof typeof Proof]
+    })
+    return result.length>0?result[0] as Proof:Proof.Lost;
   }
 }
 
