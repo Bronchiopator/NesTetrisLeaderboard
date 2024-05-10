@@ -1,0 +1,14 @@
+// app-leaderboard-table{
+// margin: auto;
+// width: 50%;
+// }
+.scaffold {
+    margin-left: 0;
+    margin-right: 0;
+  }
+@media screen and (min-width: 1000px) {
+  .scaffold {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}

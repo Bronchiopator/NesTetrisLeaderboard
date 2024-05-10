@@ -11,7 +11,7 @@
 
   <ng-container matColumnDef="score">
     <th mat-header-cell *matHeaderCellDef>Score</th>
-    <td mat-cell *matCellDef="let element">{{ element.score }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.score | number}}</td>
   </ng-container>
 
   <ng-container matColumnDef="proofLink">
@@ -24,7 +24,7 @@
   <ng-container matColumnDef="vidPB">
     <th mat-header-cell *matHeaderCellDef>Video Personal Best</th>
     <td mat-cell *matCellDef="let element">
-      {{ element.videoPersonalBest }}
+      {{ element.videoPersonalBest | number}}
     </td>
   </ng-container>
 
@@ -46,10 +46,7 @@
     <th mat-header-cell *matHeaderCellDef>Crash</th>
     <td mat-cell *matCellDef="let element">
       @if (element.crash) {
-      <mat-icon>destruction</mat-icon>
-      }@else{
-      <mat-icon>success</mat-icon>
-
+      <span class="material-symbols-outlined"> destruction </span>
       }
     </td>
   </ng-container>

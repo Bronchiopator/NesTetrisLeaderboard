@@ -8,23 +8,24 @@ import { TetrisTableRow } from '../../model/TetrisTableRow';
 import { DataSource } from '@angular/cdk/table';
 import { InputMethod } from '../../model/InputMethod';
 import { TransformToRowPipe } from '../transform-to-row.pipe';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-sheet-api-test',
+  selector: 'app-leaderboard-table',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatInputModule, MatTableModule],
-  templateUrl: './sheet-api-test.component.html',
-  styleUrl: './sheet-api-test.component.scss',
+  imports: [MatButtonModule, MatIconModule, MatInputModule, MatTableModule,DecimalPipe],
+  templateUrl: './leaderboard-table.component.html',
+  styleUrl: './leaderboard-table.component.scss',
 })
-export class SheetApiTestComponent {
+export class LeaderboardTableComponent {
   dataSource: MatTableDataSource<TetrisTableRow> =
     new MatTableDataSource<TetrisTableRow>([]);
   pipe: TransformToRowPipe;
   displayedColumns: string[] = [
     'ranking',
     'name',
-    'crash',
     'score',
+    'crash',
     'style',
     'proofType',
     'vidPB',

@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
-import { SheetApiTestComponent } from './sheet-api-test/sheet-api-test.component';
+import { LeaderboardTableComponent } from './leaderboard-table/leaderboard-table.component';
+import { ScaffoldComponent } from './scaffold/scaffold.component';
 
 export const routes: Routes = [
-  { path: 'test', component: SheetApiTestComponent },
-  { path: '', pathMatch: 'full', redirectTo: 'test' },
+  // { path: 'test', component: LeaderboardTableComponent },
+  // { path: '', pathMatch: 'full', redirectTo: 'test' },
+  { path: '', component: ScaffoldComponent },
+
 ];
