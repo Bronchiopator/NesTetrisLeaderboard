@@ -1,8 +1,6 @@
 
 @use '@angular/material' as mat;
 @use '@angular/material-experimental' as matx;
-$material-symbols-font-path: 'material-symbols/';
-@import 'material-symbols';
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
