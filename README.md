@@ -9,6 +9,8 @@ An attempt to build a NES Tetris leaderboard with features like:
 
 Currently implemented NTSC 0-19 (Main leaderboard)
 
+Site: https://bronchiopator.github.io/NesTetrisLeaderboard/
+
 ## Credits
 The NES Tetris Leaderboard is a [google sheet](https://docs.google.com/spreadsheets/d/1ZBxkZEsfwDsUpyire4Xb16er36Covk7nhR8BN_LPodI/edit#gid=907672507) maintained by the community. The data is fetched directly from there, and sanitized. Without this sheet this leaderboard cannot exist.
 
