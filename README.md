@@ -1,27 +1,34 @@
 # NesTetrisLeaderboard
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.0.
+An attempt to build a NES Tetris leaderboard with features like:
+- Searching
+- Advanced Filtering (WIP)
+- Player Page (WIP)
+- Explanation of Terms (WIP)
+- Leaderboards for all Categories (WIP)
 
-## Development server
+## Credits
+The NES Tetris Leaderboard is a [google sheet](https://docs.google.com/spreadsheets/d/1ZBxkZEsfwDsUpyire4Xb16er36Covk7nhR8BN_LPodI/edit#gid=907672507) maintained by the community. The data is fetched directly from there, and sanitized. Without this sheet this Leaderboard cannot exist.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Rate Limit
+The access to the google sheet api is limited to 300 requests per Minute.
+A single visit requires 1 request per Leaderboard,
+and one each for looking at one note and watching one proof. So 300 should be plenty, as the google sheet leaderbaord is currently visited by no more than 6 people at once.
 
-## Code scaffolding
+If this get popular and the limit is exceeded, please contact me, and i will work something out.  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Additional planned Stuff
+- Proof
+  - Proof should be watchable/viewable embedded.
+  - No longer existing proof should be checked with Wayback machine.
+- Score Colorization and Font to match Sheet
+- Dark Mode/Light Mode
+- Player Page
+  - Show player and scores over various leaderbaords
+  - Maybe get infos from [liquipedia.net](https://liquipedia.net/tetris)
+- Visual Stuff
+  - Maybe falling tetris blocks parallax effect while scrolling?
+  - Allow switching of Leaderboards via tabs
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

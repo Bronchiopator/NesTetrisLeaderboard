@@ -21,6 +21,7 @@ export class TransformToRowPipe implements PipeTransform {
         proofType: this.ConvertStringtoProof(row[6]),
         videoPersonalBest: +row[7],
         notes: this.getNotes(row),
+        //does not always work, when there is no proof it will default to notes
         proofLabel: row[row.length - 1],
         proofLink: '',
       } as TetrisTableRow;
@@ -31,17 +32,18 @@ export class TransformToRowPipe implements PipeTransform {
   }
 
   private getNotes(row: string[]): string {
-    //notes and proof exists
-    if (row.length > 7) {
-      return row.slice(8, -1).join('');
-      //last element is proof link
-      // if(row[row.length - 1]==){
-
-      // }
-    }
+    // TODO: implement get notes
+    // Notes can be a merged cell, or two seperated cell,
+    // with either one or both filled
+    // Because of this notws have to be called seperatly.
     return '';
   }
-  private getProof() {}
+  private getProof() {
+    // TODO: implement get Proof link and label
+    // The normal request does not contain the hyperlink, just the label.
+    // Becuase of this all proofs have to be called seperatly,
+    // majorly increasing the calls to the google sheet
+  }
 
   private ConvertStringtoPlatform(platform: string): GamePlatform {
     try {
@@ -68,14 +70,14 @@ export class TransformToRowPipe implements PipeTransform {
   }
 
   private ConvertStringtoProof(proof: string): Proof {
+    // old way gets the enum title not value
     // return Proof[proof as keyof typeof Proof] ?? Proof.Lost;
 
-    var result=Object.keys(Proof).filter(key=>{
-      return proof==Proof[key as keyof typeof Proof]
-    })
-    return result.length>0?result[0] as Proof:Proof.Lost;
+    let result = Object.keys(Proof).filter((key) => {
+      return proof == Proof[key as keyof typeof Proof];
+    });
+    //TODO: fox Partial video prooftype
+    //not working for Partial Video, since the Tag is P.Video
+    return result.length > 0 ? Proof[result[0]as keyof typeof Proof] : Proof.Lost;
   }
 }
-
-//['', 'Name', 'Cr', 'Score', 'Platform', 'Style', 'Proof', 'Vid PB', 'Notes', '', 'Proof Link']
-//['1', 'Alex Thach', '', '16700760', 'Console', 'Roll', 'Video+', '16700760', 'WR, on GymV5 = no crash & wrong colors', '', 'YouTube']
