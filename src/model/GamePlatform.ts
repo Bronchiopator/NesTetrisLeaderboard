@@ -1,4 +1,4 @@
 export enum GamePlatform {
-  Console,
-  Emulator,
+  Console='Console',
+  Emulator='Emulator',
 }
