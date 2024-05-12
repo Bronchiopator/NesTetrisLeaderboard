@@ -10,10 +10,17 @@
 }
 .mat-column-ranking,
 .mat-column-score ,
-.mat-column-vidPB {
+.mat-column-videoPersonalBest {
     text-align: right;
 }
-
+.proofCell{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  span{
+    min-width: 4em;
+  }
+}
 .mat-column-style {
 }
 

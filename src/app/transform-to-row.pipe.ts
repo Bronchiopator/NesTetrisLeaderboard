@@ -1,8 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TetrisTableRow } from '../model/TetrisTableRow';
 import { InputMethod } from '../model/InputMethod';
-import { Proof } from '../model/Proof';
+import { ProofType } from '../model/Proof';
 import { GamePlatform } from '../model/GamePlatform';
+
+// Scheme returned by the api. All properties are received as strings and have to be parsed
+// [
+//   [
+//  0   ranking,
+//  1   name,
+//  2   score,
+//  3   crash(boolean true ='*' false=''),
+//  4   platform(emulator/console),
+//  5   playStyle,
+//  6   proofType,
+//  7   vidPB(sometimes not set)
+//  8   notes (should always be set)
+//  9   proofLabel (description where the link is saved, not always set)
+//  10  proofLink (url to the proof, not always set, sometimes 404s)
+//   ]
+// ]
 
 @Pipe({
   name: 'transformToRow',
@@ -17,13 +34,16 @@ export class TransformToRowPipe implements PipeTransform {
         crash: row[2] === '*',
         score: +row[3],
         platform: this.ConvertStringtoPlatform(row[4]),
-        style: this.ConvertStringtoStyle(row[5]),
+        playStyle: this.ConvertStringtoStyle(row[5]),
         proofType: this.ConvertStringtoProof(row[6]),
-        videoPersonalBest: +row[7],
-        notes: this.getNotes(row),
+        proof: {
+          linkLable: row[9] ?? '',
+          proofType: this.ConvertStringtoProof(row[6]),
+          link: row[10] ?? '',
+        },
+        videoPersonalBest: this.getVideoPb(row),
         //does not always work, when there is no proof it will default to notes
-        proofLabel: row[row.length - 1],
-        proofLink: '',
+        notes: row[8],
       } as TetrisTableRow;
     } catch (error) {
       console.log('parsing of failed ', row, '. Error: ', error);
@@ -31,18 +51,13 @@ export class TransformToRowPipe implements PipeTransform {
     }
   }
 
-  private getNotes(row: string[]): string {
-    // TODO: implement get notes
-    // Notes can be a merged cell, or two seperated cell,
-    // with either one or both filled
-    // Because of this notws have to be called seperatly.
-    return '';
-  }
-  private getProof() {
-    // TODO: implement get Proof link and label
-    // The normal request does not contain the hyperlink, just the label.
-    // Becuase of this all proofs have to be called seperatly,
-    // majorly increasing the calls to the google sheet
+  private getVideoPb(row: string[]): number {
+    let vidPbScore = parseInt(row[7]);
+    if (isNaN(vidPbScore)) {
+      return 0;
+    } else {
+      return vidPbScore;
+    }
   }
 
   private ConvertStringtoPlatform(platform: string): GamePlatform {
@@ -58,26 +73,31 @@ export class TransformToRowPipe implements PipeTransform {
     let seperadedStyles: string[] = styles.split('+');
 
     for (const singleString of seperadedStyles) {
-      try {
-        convertedStyles.push(
-          InputMethod[singleString as keyof typeof InputMethod]
-        );
-      } catch (error) {
-        convertedStyles.push(InputMethod.Roll);
-      }
+      let result = Object.keys(InputMethod).filter((key) => {
+        return singleString == InputMethod[key as keyof typeof InputMethod];
+      });
+      //TODO: fox Partial video prooftype
+      //Not working for Partial Video, since the Tag is P.Video
+      convertedStyles.push(
+        result.length > 0
+          ? InputMethod[result[0] as keyof typeof InputMethod]
+          : InputMethod.Roll
+      );
     }
     return convertedStyles;
   }
 
-  private ConvertStringtoProof(proof: string): Proof {
+  private ConvertStringtoProof(proof: string): ProofType {
     // old way gets the enum title not value
     // return Proof[proof as keyof typeof Proof] ?? Proof.Lost;
 
-    let result = Object.keys(Proof).filter((key) => {
-      return proof == Proof[key as keyof typeof Proof];
+    let result = Object.keys(ProofType).filter((key) => {
+      return proof == ProofType[key as keyof typeof ProofType];
     });
     //TODO: fox Partial video prooftype
     //not working for Partial Video, since the Tag is P.Video
-    return result.length > 0 ? Proof[result[0]as keyof typeof Proof] : Proof.Lost;
+    return result.length > 0
+      ? ProofType[result[0] as keyof typeof ProofType]
+      : ProofType.Lost;
   }
 }

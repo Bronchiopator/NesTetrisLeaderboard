@@ -1,8 +1,8 @@
 export enum InputMethod {
-  Roll='Roll',
-  Tap='Tap',
-  DAS='DAS',
-  mTap='mTap',
-  bTap='bTap',
-  qTap='qTap',
+  Roll = 'Roll',
+  Tap = 'Tap',
+  DAS = 'DAS',
+  mTap = 'mTap',
+  bTap = 'bTap',
+  qTap = 'qTap',
 }

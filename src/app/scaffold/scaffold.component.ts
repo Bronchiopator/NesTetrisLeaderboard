@@ -6,8 +6,6 @@ import { LeaderboardTableComponent } from '../leaderboard-table/leaderboard-tabl
   standalone: true,
   imports: [LeaderboardTableComponent],
   templateUrl: './scaffold.component.html',
-  styleUrl: './scaffold.component.scss'
+  styleUrl: './scaffold.component.scss',
 })
-export class ScaffoldComponent {
-
-}
+export class ScaffoldComponent {}

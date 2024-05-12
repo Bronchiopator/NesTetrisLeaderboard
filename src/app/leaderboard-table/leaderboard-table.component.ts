@@ -1,25 +1,35 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { SheetApiService } from '../sheet-api.service';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { TetrisTableRow } from '../../model/TetrisTableRow';
-import { DataSource } from '@angular/cdk/table';
 import { InputMethod } from '../../model/InputMethod';
 import { TransformToRowPipe } from '../transform-to-row.pipe';
 import { DecimalPipe } from '@angular/common';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProofButtonComponent } from './proof-button/proof-button.component';
 
 @Component({
   selector: 'app-leaderboard-table',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatInputModule, MatTableModule,MatFormFieldModule,DecimalPipe,MatSortModule],
+  imports: [
+    MatIconModule,
+    MatInputModule,
+    MatTableModule,
+    MatFormFieldModule,
+    DecimalPipe,
+    MatSortModule,
+    MatTooltipModule,
+    ProofButtonComponent
+  ],
   templateUrl: './leaderboard-table.component.html',
   styleUrl: './leaderboard-table.component.scss',
 })
-export class LeaderboardTableComponent implements AfterViewInit{
+export class LeaderboardTableComponent implements AfterViewInit {
+  
   @ViewChild(MatSort) sort!: MatSort;
 
   dataSource: MatTableDataSource<TetrisTableRow> =
@@ -30,26 +40,24 @@ export class LeaderboardTableComponent implements AfterViewInit{
     'name',
     'score',
     'crash',
-    'style',
+    'playStyle',
     'proofType',
-    'vidPB',
+    'videoPersonalBest',
     'platform',
-    // 'notes',
-    // 'proofLink',
+    'notes',
   ];
 
   constructor(private servie: SheetApiService) {
     this.pipe = new TransformToRowPipe();
-    this.servie.getNtscFullScore().subscribe((x: any) => {
-      this.dataSource.data = this.getTransformedData(x.values);
-      console.log(x);
+    this.servie.getNtscFullScore().subscribe((x: string[][]) => {
+      console.log('table get data', x);
+      this.dataSource.data = this.getTransformedData(x);
     });
   }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
-
 
   getStyleString(style: InputMethod, isFirst: boolean) {
     return isFirst ? style : '+' + style;
@@ -70,6 +78,8 @@ export class LeaderboardTableComponent implements AfterViewInit{
     for (const iterator of values.slice(1)) {
       data.push(this.pipe.transform(iterator)!);
     }
+    console.log('finished tranformation', data);
+
     return data;
   }
 }
