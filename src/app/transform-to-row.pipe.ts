@@ -88,9 +88,6 @@ export class TransformToRowPipe implements PipeTransform {
   }
 
   private ConvertStringtoProof(proof: string): ProofType {
-    // old way gets the enum title not value
-    // return Proof[proof as keyof typeof Proof] ?? Proof.Lost;
-
     let result = Object.keys(ProofType).filter((key) => {
       return proof == ProofType[key as keyof typeof ProofType];
     });
