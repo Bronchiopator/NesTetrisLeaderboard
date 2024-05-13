@@ -1,43 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
 import { GoogleFieldsResult, HyperLink } from '../model/HyperLink';
-/// This api key is limited to google sheets api,
-/// and limited to requests from certain urls.
-/// If you want to deploy the project yourself 
-/// you have to issue your own api key.
-/// This is free and can be done under 
-/// https://console.cloud.google.com/apis/credentials?hl=en&project=[projectname]
-/// after creating your own project.
-/// I recommend restricting the key to google sheet api 
-/// and to only work from your website, to prevent highjacking.
-/// If this is done correctly the gitguardian warning mail can be ignored.
-/// During dev work the correct course is creating a seperate, less restrictive, key,
-/// that should never be published.
-const apiKey: string = 'AIzaSyDDta7RwA0cAD3fqbaqrSt9BDTVelnjHY4';
-
-const spreadsheetId: string = '1ZBxkZEsfwDsUpyire4Xb16er36Covk7nhR8BN_LPodI';
-const ntscFullScore: string = 'NTSC 0-19 Score!A:H';
-const ntscFullScoreNotes: string = 'NTSC 0-19 Score!I:J';
-const ntscFullScoreProof: string = 'NTSC 0-19 Score!K:K';
-const ntscFullScoreWithCrash: string = 'NTSC 0-19 Score w/ Crash!A:K';
-const ntsc19Score: string = 'NTSC 19 Score!A:J';
-const ntsc29Score: string = 'NTSC 29 Score!A:J';
-const ntsc29Line: string = 'NTSC 29 Lines!A:J';
-const ntscLevel: string = 'NTSC Level Lines!A:K';
-const hyperlinkFieldsParameters: string =
-  '&fields=sheets(data(rowData(values(formattedValue,hyperlink))))';
-
-//List of sheet table names
-//NTSC 0-19 Score
-//NTSC 0-19 Score w/ Crash
-//NTSC 19 Score
-//NTSC 29 Score
-//NTSC 29 Lines
-//NTSC Maxout Lines
-//NTSC 29 Maxout Lines
-//NTSC Rollover Lines
-//NTSC RNG Manip Score
+import {
+  getSheetRequestUrl,
+  getValueRequestUrl,
+  ntscFullScore,
+  ntscFullScoreNotes,
+  ntscFullScoreProof,
+} from './api-constants/api-sheet-data';
 
 @Injectable({
   providedIn: 'root',
@@ -45,13 +16,13 @@ const hyperlinkFieldsParameters: string =
 export class SheetApiService {
   constructor(private client: HttpClient) {}
   getRange(range: string): Observable<{ values: string[][] }> {
-    return this.client.get(
-      `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`
-    ) as Observable<{ values: string[][] }>;
+    return this.client.get(getValueRequestUrl(range)) as Observable<{
+      values: string[][];
+    }>;
   }
   getHyperlinkRange(range: string): Observable<GoogleFieldsResult> {
     return this.client.get(
-      `https://content-sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?ranges=${range}&includeGridData=true${hyperlinkFieldsParameters}&key=${apiKey}`
+      getSheetRequestUrl(range)
     ) as Observable<GoogleFieldsResult>;
   }
   getNtscFullScore(): Observable<string[][]> {
@@ -62,7 +33,6 @@ export class SheetApiService {
     // detect empty/missing fields,
     // and also catch the edge cases with merged cells.
     // This is possible, but a major pain.
-
     let noteObs = this.getRange(ntscFullScoreNotes);
     let tableObs = this.getRange(ntscFullScore);
     let proofLinkObs = this.getProoflink();
