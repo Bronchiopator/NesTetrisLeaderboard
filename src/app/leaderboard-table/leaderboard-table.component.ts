@@ -23,13 +23,12 @@ import { ProofButtonComponent } from './proof-button/proof-button.component';
     DecimalPipe,
     MatSortModule,
     MatTooltipModule,
-    ProofButtonComponent
+    ProofButtonComponent,
   ],
   templateUrl: './leaderboard-table.component.html',
   styleUrl: './leaderboard-table.component.scss',
 })
 export class LeaderboardTableComponent implements AfterViewInit {
-  
   @ViewChild(MatSort) sort!: MatSort;
 
   dataSource: MatTableDataSource<TetrisTableRow> =
@@ -52,6 +51,12 @@ export class LeaderboardTableComponent implements AfterViewInit {
     this.servie.getNtscFullScore().subscribe((x: string[][]) => {
       console.log('table get data', x);
       this.dataSource.data = this.getTransformedData(x);
+      //TODO: Debug code remove before full release
+      for (const iterator of this.dataSource.data) {
+        if (iterator.proof.link != '') {
+          console.log(iterator.ranking, iterator.proof.link);
+        }
+      }
     });
   }
 
@@ -83,8 +88,7 @@ export class LeaderboardTableComponent implements AfterViewInit {
     return data;
   }
 }
-//['', 'Name', 'Cr', 'Score', 'Platform', 'Style', 'Proof', 'Vid PB', 'Notes', '', 'Proof Link']
-//['1', 'Alex Thach', '', '16700760', 'Console', 'Roll', 'Video+', '16700760', 'WR, on GymV5 = no crash & wrong colors', '', 'YouTube']
+//TODO: Try to 'parallelize' the row transformation
 // async function parallel(arr: string[], fn: Function, threads: number = 2) {
 //   const result = [];
 //   while (arr.length) {

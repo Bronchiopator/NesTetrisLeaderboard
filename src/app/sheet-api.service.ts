@@ -2,8 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
 import { GoogleFieldsResult, HyperLink } from '../model/HyperLink';
-
+/// This api key is limited to google sheets api,
+/// and limited to requests from certain urls.
+/// If you want to deploy the project yourself 
+/// you have to issue your own api key.
+/// This is free and can be done under 
+/// https://console.cloud.google.com/apis/credentials?hl=en&project=[projectname]
+/// after creating your own project.
+/// I recommend restricting the key to google sheet api 
+/// and to only work from your website, to prevent highjacking.
+/// If this is done correctly the gitguardian warning mail can be ignored.
+/// During dev work the correct course is creating a seperate, less restrictive, key,
+/// that should never be published.
 const apiKey: string = 'AIzaSyDDta7RwA0cAD3fqbaqrSt9BDTVelnjHY4';
+
 const spreadsheetId: string = '1ZBxkZEsfwDsUpyire4Xb16er36Covk7nhR8BN_LPodI';
 const ntscFullScore: string = 'NTSC 0-19 Score!A:H';
 const ntscFullScoreNotes: string = 'NTSC 0-19 Score!I:J';

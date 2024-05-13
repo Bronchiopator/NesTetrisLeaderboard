@@ -24,3 +24,6 @@ body[data-theme="light"] {
 .mdc-switch--selected .mdc-switch__handle-track {
   transform: translateX(0%) !important;
 }
+body{
+  --mat-dialog-container-min-width:60vw;
+}

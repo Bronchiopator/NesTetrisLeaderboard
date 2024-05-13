@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { EmbeddedImageComponent } from './embedded-displays/embedded-image.component';
 import { EmbeddedTwitchComponent } from './embedded-displays/embedded-twitch.component';
 import { EmbeddedYoutubeComponent } from './embedded-displays/embedded-youtube.component';
+import { PseudoSummaryComponent } from './pseudo-summary/pseudo-summary.component';
 
 MatCardModule;
 enum DisplayProof {
@@ -29,10 +30,10 @@ enum DisplayProof {
   imports: [
     MatDialogModule,
     MatExpansionModule,
-    MatCardModule,
     EmbeddedImageComponent,
     EmbeddedTwitchComponent,
     EmbeddedYoutubeComponent,
+    PseudoSummaryComponent,
   ],
   templateUrl: './proof-dialog.component.html',
   styleUrl: './proof-dialog.component.scss',
@@ -50,7 +51,7 @@ export class ProofDialogComponent {
     this.type = this.calculateProofType();
   }
 
-  calculateProofType(): DisplayProof {
+  private calculateProofType(): DisplayProof {
     console.log('url:', this.data.link);
     if (!this.data.link) return DisplayProof.NotLoadable;
     let url = new URL(this.data.link);
@@ -65,6 +66,7 @@ export class ProofDialogComponent {
       console.log('twitch');
       return DisplayProof.Twitch;
     }
+    //TODO Seperate Discord VIdeo and images
     if (
       url.hostname.includes('cdn.discordapp.com') ||
       url.hostname.includes('discord.com') ||
@@ -73,18 +75,11 @@ export class ProofDialogComponent {
       console.log('discord');
       return DisplayProof.DiscordVideo;
     }
-    if (
-      url.hostname.includes('cdn.discordapp.com') ||
-      url.hostname.includes('discord.com') ||
-      url.hostname.includes('media.discordapp.net')
-    ) {
-      console.log('discord');
-      return DisplayProof.DiscordVideo;
-    }
+   
     return DisplayProof.NotLoadable;
   }
 
-  getDescriptionText(): string {
+  private getDescriptionText(): string {
     switch (this.data.proofType) {
       case ProofType.VideoPlus:
         return "Video of entire game supported by handcam, clear controller audio, or other live verification that's been verified by a leaderboard mod; available for new scores or old 1.3+ scores.";
@@ -103,7 +98,11 @@ export class ProofDialogComponent {
         break;
     }
   }
-  onNoClick(): void {
-    this.dialogRef.close();
+
+  getSummary(): { title: string; description: string } {
+    return {
+      title: `Term '${this.data.proofType}' Explanation`,
+      description: this.getDescriptionText(),
+    };
   }
 }

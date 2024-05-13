@@ -32,14 +32,16 @@ export class ProofButtonComponent {
   @Input({ required: true }) proof!: Proof;
 
   constructor(public dialog: MatDialog) {}
+
+  /// QOL. Implemented so the proof button can be middle clicked,
+  /// and the proof link opens in a new tab
   secondaryClickEvent(url: string, event: MouseEvent) {
-    console.log(event);
-    console.log(event.button);
     //check if middle mouse button
     if (event.button == 1) {
       window.open(url, '_blank');
     }
   }
+  
   hasProof(proof: Proof): boolean {
     function isValidUrl(urlString: string): boolean {
       try {
@@ -56,12 +58,7 @@ export class ProofButtonComponent {
     if (!proof.link) {
       return false;
     }
-    if (isValidUrl(proof.link)) {
-      return true;
-    } else {
-      console.log(proof.link);
-      return false;
-    }
+    return isValidUrl(proof.link);
   }
 
   openDialog(proof: Proof): void {
