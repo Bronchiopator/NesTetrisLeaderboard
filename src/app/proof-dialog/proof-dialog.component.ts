@@ -23,6 +23,7 @@ enum DisplayProof {
   NotLoadable = 'Not Loadable',
   INIT = 'INIT',
   GenericImage = 'GenericImage',
+  Unknown = 'Unknown',
 }
 @Component({
   selector: 'app-proof-dialog',
@@ -54,29 +55,20 @@ export class ProofDialogComponent {
   private calculateProofType(): DisplayProof {
     console.log('url:', this.data.link);
     if (!this.data.link) return DisplayProof.NotLoadable;
-    let url = new URL(this.data.link);
-    if (
-      url.hostname.includes('youtube.com') ||
-      url.hostname.includes('youtu.be')
-    ) {
-      console.log('youtube');
+    if (EmbeddedYoutubeComponent.isYoutube(this.data.link)) {
       return DisplayProof.Youtube;
     }
-    if (url.hostname.includes('twitch.tv')) {
-      console.log('twitch');
+    if (EmbeddedTwitchComponent.isTwitch(this.data.link)) {
       return DisplayProof.Twitch;
     }
-    //TODO Seperate Discord VIdeo and images
-    if (
-      url.hostname.includes('cdn.discordapp.com') ||
-      url.hostname.includes('discord.com') ||
-      url.hostname.includes('media.discordapp.net')
-    ) {
-      console.log('discord');
-      return DisplayProof.DiscordVideo;
-    }
-   
-    return DisplayProof.NotLoadable;
+    // TODO Check
+    // - Discord images
+    // - Discord videos
+    // - generic images
+    // - generic video
+    // - clipfish?
+
+    return DisplayProof.Unknown;
   }
 
   private getDescriptionText(): string {

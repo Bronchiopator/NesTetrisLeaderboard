@@ -17,8 +17,8 @@ interface ExampleFlatNode {
   level: number;
 }
 // Angular Material does not (currently) provide a Summary-/Inplace-Component,
-// and i did not ike the look of the expansion panel in this case.
-// So this is a hijacked tree component that achieves something similair.
+// and i did not like the look of the expansion panel in this case.
+// So this is a hijacked tree component that achieves something similar.
 // Note that this does not reserve the width of the description text, since it only gets injected into the dom on button click 
 @Component({
   selector: 'app-pseudo-summary',

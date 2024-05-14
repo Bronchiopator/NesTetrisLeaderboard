@@ -11,6 +11,9 @@
     @case (DisplayProof.Youtube) {
       <app-embedded-youtube [data]="data" />
     } 
+    @case (DisplayProof.Twitch) {
+      <app-embedded-twitch [data]="data" />
+    } 
     @default {
       <p>
         @if (data.link) { Direct Link:

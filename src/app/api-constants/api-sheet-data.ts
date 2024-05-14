@@ -1,4 +1,4 @@
-//List of sheet table names
+//List of sheet pages names
 //NTSC 0-19 Score
 //NTSC 0-19 Score w/ Crash
 //NTSC 29 Score
