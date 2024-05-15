@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Proof } from '../../../model/Proof';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { SingleMatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
+import { MatButtonModule } from '@angular/material/button';
 
 const twitchIdRegex: SingleMatchgroupRegex = {
   regex: /^https\:\/\/www\.twitch\.tv\/videos\/([0-9]{10})/,
@@ -14,7 +15,7 @@ const twitchTimestampRegex: SingleMatchgroupRegex = {
 @Component({
   selector: 'app-embedded-twitch',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   template: `
     @if(videoUrl){
     <div class="video-container">
@@ -29,7 +30,7 @@ const twitchTimestampRegex: SingleMatchgroupRegex = {
     <div>
       Could not recognize link. If this is indeed a twitch link please raise an
       issue on github. Link:
-      <a [href]="data.link">{{ data.link }}</a>
+      <a mat-flat-button [href]="data.link">{{ data.link }}</a>
     </div>
     }
   `,

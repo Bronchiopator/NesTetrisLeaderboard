@@ -8,12 +8,13 @@ import {
   matches,
 } from './embedded-helper';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatButtonModule } from '@angular/material/button';
 
 const discordMediaLink: MultiMatchgroupRegex = {
   regex:
     /https:\/\/(media|cdn)\.discordapp\.(net|com)\/attachments\/([0-9]{18,}\/[0-9]{18,}\/)([A-Za-z0-9\.\-_~:?#\[\]@!\$&'\(\)\*\+,;%]*(\.jpg|\.png|\.mp4|\.mov))/,
-  /// 0 link, 1 filending
-  matchGroupIndeces: [0, 1],
+  /// 0 link, 5 filending
+  matchGroupIndeces: [0, 5],
 };
 const discordChannelLink: SingleMatchgroupRegex = {
   regex:
@@ -31,14 +32,19 @@ enum DiscordType {
 @Component({
   selector: 'app-embedded-discord',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
+  // this does not work, because of CORS it does not.
+  // new strategy. On button click only open the one where we can embedd it,
+  // all other just open into a new tab
+  // that means we delete this whole class.
   template: `
     @switch (urlType) { @case (DiscordType.video) {
-    <span>video</span>
+    <video [src]="proofURL"></video>
     } @case (DiscordType.image) {
-    <span>image</span>
+    <img [src]="proofURL" />
     } @case (DiscordType.channel) {
-    <span>Channel</span>
+    <div>Link to Discord Channel</div>
+    <a mat-flat-button [href]="proofURL" color="primary">Enter</a>
     } @case (DiscordType.unknown) { unknown } @default { Default case } }
   `,
   styles: ``,
@@ -49,7 +55,9 @@ export class EmbeddedDiscordComponent {
   urlType: DiscordType = DiscordType.unknown;
   proofURL?: SafeResourceUrl;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
     if (this.data?.link) {
@@ -91,7 +99,7 @@ export class EmbeddedDiscordComponent {
       this.urlType = DiscordType.channel;
       this.proofURL =
         this.sanitizer.bypassSecurityTrustResourceUrl(channelLink);
-        return;
+      return;
     }
     this.urlType = DiscordType.unknown;
   }

@@ -51,12 +51,6 @@ export class LeaderboardTableComponent implements AfterViewInit {
     this.servie.getNtscFullScore().subscribe((x: string[][]) => {
       console.log('table get data', x);
       this.dataSource.data = this.getTransformedData(x);
-      //TODO: Debug code remove before full release
-      for (const iterator of this.dataSource.data) {
-        if (iterator.proof.link != '') {
-          console.log(iterator.ranking, iterator.proof.link);
-        }
-      }
     });
   }
 

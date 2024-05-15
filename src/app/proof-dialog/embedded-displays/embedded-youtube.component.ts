@@ -1,7 +1,12 @@
 import { Component, Input, OnInit, Sanitizer } from '@angular/core';
 import { Proof } from '../../../model/Proof';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SingleMatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
+import {
+  SingleMatchgroupRegex,
+  matchWithGroupId,
+  matches,
+} from './embedded-helper';
+import { MatButtonModule } from '@angular/material/button';
 
 const youtubeParameterNoSuggestVideos = '?rel=0';
 // Note that currently an id is always 11 characters, but google has not comitted to that and might increase it in the future.
@@ -22,7 +27,7 @@ const youtubeStudioIdMatchRegex: SingleMatchgroupRegex = {
 @Component({
   selector: 'app-embedded-youtube',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   template: `
     @if(videoUrl){
     <div class="video-container">
@@ -39,7 +44,7 @@ const youtubeStudioIdMatchRegex: SingleMatchgroupRegex = {
     <div>
       Could not recognize link. If this is indeed a youtube link please raise an
       issue on github. Link:
-      <a [href]="data.link">{{ data.link }}</a>
+      <a mat-flat-button [href]="data.link">{{ data.link }}</a>
     </div>
     }
   `,
@@ -63,8 +68,9 @@ export class EmbeddedYoutubeComponent implements OnInit {
   videoUrl?: SafeResourceUrl;
 
   constructor(private sanitizer: DomSanitizer) {}
+
   ngOnInit(): void {
-    this.setVideoUrl();
+    if (this.data.link) this.setVideoUrl();
   }
 
   public static isYoutube(unsanitizedUrl: string): boolean {

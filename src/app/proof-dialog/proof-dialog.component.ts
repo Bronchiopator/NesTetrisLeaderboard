@@ -13,6 +13,7 @@ import { EmbeddedTwitchComponent } from './embedded-displays/embedded-twitch.com
 import { EmbeddedYoutubeComponent } from './embedded-displays/embedded-youtube.component';
 import { PseudoSummaryComponent } from './pseudo-summary/pseudo-summary.component';
 import { EmbeddedImageComponent } from './embedded-displays/embedded-image.component';
+import { MatButtonModule } from '@angular/material/button';
 
 MatCardModule;
 enum DisplayProof {
@@ -31,6 +32,7 @@ enum DisplayProof {
   imports: [
     MatDialogModule,
     MatExpansionModule,
+    MatButtonModule,
     EmbeddedImageComponent,
     EmbeddedTwitchComponent,
     EmbeddedYoutubeComponent,
@@ -43,6 +45,7 @@ enum DisplayProof {
 export class ProofDialogComponent {
   DisplayProof = DisplayProof;
   type: DisplayProof = DisplayProof.INIT;
+  hostname:string=new URL(this.data.link??'').hostname;
 
   constructor(
     public dialogRef: MatDialogRef<ProofDialogComponent>,

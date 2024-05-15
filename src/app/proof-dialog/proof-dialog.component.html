@@ -1,26 +1,19 @@
 <h2 mat-dialog-title>{{ data.proofType }}</h2>
 <mat-dialog-content>
   <div>{{ data.linkLable }}:</div>
-  @switch (type) { 
-    @case (DisplayProof.Discord) {
-      <app-embedded-discord [data]="data" />
-    } 
-    @case (DisplayProof.GenericImage) {
-      <app-embedded-image [data]="data" />
-    } 
-    @case (DisplayProof.Youtube) {
-      <app-embedded-youtube [data]="data" />
-    } 
-    @case (DisplayProof.Twitch) {
-      <app-embedded-twitch [data]="data" />
-    } 
-    @default {
-      <p>
-        @if (data.link) { Direct Link:
-        <a [href]="data.link">{{ data.linkLable }}</a>
-        }@else { No link was provided. }
-      </p>
-    } 
+  @if ( ['www.youtube.com', 'youtu.be'].includes(hostname) ) {
+  <app-embedded-youtube [data]="data" />
+  }@else if ('www.twitch.tv'==hostname) {
+  <app-embedded-twitch [data]="data" />
+  } @else if ( [ 'cdn.discordapp.com', 'media.discordapp.net', 'discord.com',
+  ].includes(hostname)) {
+  <app-embedded-discord [data]="data" />
+  }@else {
+  <p>
+    @if (data.link) { 
+    <a mat-flat-button [href]="data.link">{{ data.linkLable }}</a>
+    }@else { No link was provided. }
+  </p>
   }
-<app-pseudo-summary [summary]="getSummary()"/>
+  <app-pseudo-summary [summary]="getSummary()" />
 </mat-dialog-content>
