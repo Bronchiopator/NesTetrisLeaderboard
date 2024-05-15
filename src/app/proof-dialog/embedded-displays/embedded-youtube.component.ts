@@ -1,21 +1,21 @@
 import { Component, Input, OnInit, Sanitizer } from '@angular/core';
 import { Proof } from '../../../model/Proof';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
+import { SingleMatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
 
 const youtubeParameterNoSuggestVideos = '?rel=0';
 // Note that currently an id is always 11 characters, but google has not comitted to that and might increase it in the future.
 // I have anticipated an increase, but a change of character set would break this.
 // If that happens videos containing these new characters in the id would not be matched.
 // This is something I cannot anticipate, and for user safety i will not increase the matched characters.
-const youtubeIdMatchRegex: MatchgroupRegex = {
+const youtubeIdMatchRegex: SingleMatchgroupRegex = {
   regex:
     /^(https:\/\/www\.youtube\.com\/watch\?v=|https:\/\/youtu\.be\/)([A-Za-z0-9_-]{11,})/,
   matchGroupIndex: 2,
 };
 // Special case for the people who send in a youtube studio link.
 // This happened only once, so I am ok with this hyper specific regex.
-const youtubeStudioIdMatchRegex: MatchgroupRegex = {
+const youtubeStudioIdMatchRegex: SingleMatchgroupRegex = {
   regex: /^https:\/\/studio\.youtube\.com\/video\/([A-Za-z0-9_-]{11,})\/edit$/,
   matchGroupIndex: 1,
 };

@@ -2,8 +2,8 @@
 <mat-dialog-content>
   <div>{{ data.linkLable }}:</div>
   @switch (type) { 
-    @case (DisplayProof.DiscordImage) {
-      <app-embedded-image [data]="data" />
+    @case (DisplayProof.Discord) {
+      <app-embedded-discord [data]="data" />
     } 
     @case (DisplayProof.GenericImage) {
       <app-embedded-image [data]="data" />

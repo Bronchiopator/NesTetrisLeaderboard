@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Proof } from '../../../model/Proof';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { MatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
+import { SingleMatchgroupRegex, matchWithGroupId, matches } from './embedded-helper';
 
-const twitchIdRegex: MatchgroupRegex = {
+const twitchIdRegex: SingleMatchgroupRegex = {
   regex: /^https\:\/\/www\.twitch\.tv\/videos\/([0-9]{10})/,
   matchGroupIndex: 1,
 };
-const twitchTimestampRegex: MatchgroupRegex = {
+const twitchTimestampRegex: SingleMatchgroupRegex = {
   regex: /(\?|&)t=([0-9dhms]*)/,
   matchGroupIndex: 2,
 };

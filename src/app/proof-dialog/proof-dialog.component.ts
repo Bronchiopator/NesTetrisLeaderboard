@@ -8,17 +8,17 @@ import { Proof, ProofType } from '../../model/Proof';
 import { SheetApiService } from '../sheet-api.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
-import { EmbeddedImageComponent } from './embedded-displays/embedded-image.component';
+import { EmbeddedDiscordComponent } from './embedded-displays/embedded-discord.component';
 import { EmbeddedTwitchComponent } from './embedded-displays/embedded-twitch.component';
 import { EmbeddedYoutubeComponent } from './embedded-displays/embedded-youtube.component';
 import { PseudoSummaryComponent } from './pseudo-summary/pseudo-summary.component';
+import { EmbeddedImageComponent } from './embedded-displays/embedded-image.component';
 
 MatCardModule;
 enum DisplayProof {
   Youtube = 'Youtube',
   Twitch = 'Twitch',
-  DiscordImage = 'DiscordImage',
-  DiscordVideo = 'DiscordVideo',
+  Discord = 'Discord',
   ClipfishVideo = 'ClipfishVideo',
   NotLoadable = 'Not Loadable',
   INIT = 'INIT',
@@ -34,6 +34,7 @@ enum DisplayProof {
     EmbeddedImageComponent,
     EmbeddedTwitchComponent,
     EmbeddedYoutubeComponent,
+    EmbeddedDiscordComponent,
     PseudoSummaryComponent,
   ],
   templateUrl: './proof-dialog.component.html',
@@ -60,6 +61,9 @@ export class ProofDialogComponent {
     }
     if (EmbeddedTwitchComponent.isTwitch(this.data.link)) {
       return DisplayProof.Twitch;
+    }
+    if (EmbeddedDiscordComponent.isDiscord(this.data.link)) {
+      return DisplayProof.Discord;
     }
     // TODO Check
     // - Discord images
